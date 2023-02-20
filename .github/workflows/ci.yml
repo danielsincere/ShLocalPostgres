@@ -9,23 +9,8 @@ jobs:
   test-linux:
     name: Test on Ubuntu
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_DB: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_HOST: localhost
-        ports:
-          - 5432:5432
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
+      - run: apt-get update && install -y posgresql
       - run: psql --command="CREATE USER postgres PASSWORD 'postgres'" --command="\du" postgres
       - run: PGPASSWORD=postgres psql --username=postgres --host=localhost --list postgres
       - uses: swift-actions/setup-swift@v1
