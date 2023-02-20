@@ -10,7 +10,8 @@ jobs:
     name: Test on Ubuntu
     runs-on: ubuntu-latest
     steps:
-      - run: apt-get update && install -y posgresql
+      - run: sudo apt-get update
+      - run: sudo apt-get install -y posgresql
       - run: psql --command="CREATE USER postgres PASSWORD 'postgres'" --command="\du" postgres
       - run: PGPASSWORD=postgres psql --username=postgres --host=localhost --list postgres
       - uses: swift-actions/setup-swift@v1
