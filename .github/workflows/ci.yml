@@ -26,10 +26,12 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
+      - run: psql --command="CREATE USER postgres PASSWORD 'postgres'" --command="\du" postgres
+      - run: PGPASSWORD=postgres psql --username=postgres --host=localhost --list postgres
       - uses: swift-actions/setup-swift@v1
         with:
           swift-version: "5.7"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: swift test
       - run: swift build -c release
 
@@ -59,6 +61,6 @@ jobs:
       - uses: swift-actions/setup-swift@v1
         with:
           swift-version: "5.7"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: swift test
       - run: swift build -c release

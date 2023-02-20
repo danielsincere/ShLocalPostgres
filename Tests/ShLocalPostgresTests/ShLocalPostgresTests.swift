@@ -5,8 +5,8 @@ import XCTest
 final class ShLocalPostgresTests: XCTestCase {
   
   let config = LocalPostgres(
-    superuser: "postgres",
-    superuserPassword: "postgres",
+    superuser: "root",
+    superuserPassword: "root",
     role: "tomato",
     password: "fresh_password",
     databaseStem: "supermarket",
