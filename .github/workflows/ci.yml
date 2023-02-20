@@ -29,6 +29,7 @@ jobs:
         with:
           swift-version: "5.7"
       - uses: actions/checkout@v2
+      - run: swift test
       - run: swift build -c release
 
   test-mac:
@@ -55,4 +56,5 @@ jobs:
         with:
           swift-version: "5.7"
       - uses: actions/checkout@v2
+      - run: swift test
       - run: swift build -c release

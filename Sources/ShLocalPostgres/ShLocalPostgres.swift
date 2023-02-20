@@ -2,6 +2,10 @@ import Sh
 
 public enum ShLocalPostgres {
   
+  static func currentStatus() throws -> String {
+    try sh(String.self, #"psql -U postgres --command="\du" postgres"#)
+  }
+  
   public static func dropDB(name: String) throws {
     try sh(.terminal, "dropdb -U postgres --if-exists \(name)")
   }

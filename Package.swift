@@ -11,8 +11,11 @@ let package = Package(name: "ShLocalPostgres",
     .package(url: "https://github.com/FullQueueDeveloper/Sh", from: "1.2.0"),
   ],
   targets: [
-    .target(name: "ShLocalPostgres", dependencies: [
-      "Sh"
-    ]),
+    .target(
+      name: "ShLocalPostgres",
+      dependencies: ["Sh"]),
+    .testTarget(
+      name: "ShLocalPostgresTests",
+      dependencies: ["ShLocalPostgres"]),
   ]
 )
