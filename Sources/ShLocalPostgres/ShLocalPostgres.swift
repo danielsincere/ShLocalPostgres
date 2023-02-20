@@ -4,12 +4,11 @@ public enum ShLocalPostgres {
   
   static func currentStatus(superuser: String = "postgres",
                             superuserPassword: String = "") throws -> String {
-    try sh(String.self,
-           #"psql -U $SH_LOCAL_POSTGRES_SUPERUSER --command="\du" postgres"#,
+    try sh(#"psql -U $SH_LOCAL_POSTGRES_SUPERUSER --command="\du" postgres"#,
            environment: [
             "SH_LOCAL_POSTGRES_SUPERUSER": superuser,
             "PGPASSWORD": superuserPassword
-           ])
+           ])!
   }
   
   public static func dropDB(superuser: String = "postgres",
