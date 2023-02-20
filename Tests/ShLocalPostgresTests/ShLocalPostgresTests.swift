@@ -19,13 +19,19 @@ final class ShLocalPostgresTests: XCTestCase {
     let afterCreateStatus = try ShLocalPostgres.currentStatus()
     XCTAssertTrue(afterCreateStatus.contains("tomato"))
     
-    XCTAssertNoThrow(try ShLocalPostgres.ensureDBConnection(name: "supermarket_development", owner: "tomato", password: "fresh_password"))
+    XCTAssertNoThrow(try ShLocalPostgres.ensureDBConnection(
+      name: "supermarket_development",
+      owner: "tomato",
+      password: "fresh_password"))
     
     try config.destroyAll()
     
     let afterDestroyStatus = try ShLocalPostgres.currentStatus()
     XCTAssertFalse(afterDestroyStatus.contains("tomato"))
     
-    XCTAssertThrowsError(try ShLocalPostgres.ensureDBConnection(name: "supermarket_development", owner: "tomato", password: "fresh_password"))
+    XCTAssertThrowsError(try ShLocalPostgres.ensureDBConnection(
+      name: "supermarket_development",
+      owner: "tomato",
+      password: "fresh_password"))
   }
 }

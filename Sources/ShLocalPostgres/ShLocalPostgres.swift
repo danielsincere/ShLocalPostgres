@@ -2,16 +2,36 @@ import Sh
 
 public enum ShLocalPostgres {
   
-  static func currentStatus() throws -> String {
-    try sh(String.self, #"psql -U postgres --command="\du" postgres"#)
+  static func currentStatus(superuser: String = "postgres",
+                            superuserPassword: String = "") throws -> String {
+    try sh(String.self,
+           #"psql -U $SH_LOCAL_POSTGRES_SUPERUSER --command="\du" postgres"#,
+           environment: [
+            "SH_LOCAL_POSTGRES_SUPERUSER": superuser,
+            "PGPASSWORD": superuserPassword
+           ])
   }
   
-  public static func dropDB(name: String) throws {
-    try sh(.terminal, "dropdb -U postgres --if-exists \(name)")
+  public static func dropDB(superuser: String = "postgres",
+                            superuserPassword: String = "",
+                            name: String) throws {
+    try sh(.terminal,
+           "dropdb -U $SH_LOCAL_POSTGRES_SUPERUSER --if-exists \(name)",
+           environment: [
+            "SH_LOCAL_POSTGRES_SUPERUSER": superuser,
+            "PGPASSWORD": superuserPassword
+           ])
   }
 
-  public static func createDB(name: String, owner: String) throws {
-    try sh(.terminal, "createdb -U postgres --owner=\(owner) \(name)")
+  public static func createDB(superuser: String = "postgres",
+                              superuserPassword: String = "",
+                              name: String, owner: String) throws {
+    try sh(.terminal,
+           "createdb -U $SH_LOCAL_POSTGRES_SUPERUSER --owner=\(owner) \(name)",
+           environment: [
+            "SH_LOCAL_POSTGRES_SUPERUSER": superuser,
+            "PGPASSWORD": superuserPassword
+           ])
   }
 
   public static func ensureDBConnection(name: String, owner: String, password: String) throws {
@@ -25,7 +45,9 @@ public enum ShLocalPostgres {
            environment: ["PGPASSWORD": password])
   }
 
-  public static func createRole(name: String, password: String) throws {
+  public static func createRole(superuser: String = "postgres",
+                                superuserPassword: String = "",
+                                name: String, password: String) throws {
     let createUserScript =
       """
       DO
@@ -43,22 +65,32 @@ public enum ShLocalPostgres {
     try sh(.terminal,
             #"""
             psql \
-              -U postgres \
+              -U $SH_LOCAL_POSTGRES_SUPERUSER \
               --command="$CREATE_USER_SCRIPT" \
               --command="\du" \
               postgres
             """#,
-           environment: ["CREATE_USER_SCRIPT": createUserScript])
+           environment: [
+            "CREATE_USER_SCRIPT": createUserScript,
+            "SH_LOCAL_POSTGRES_SUPERUSER": superuser,
+            "PGPASSWORD": superuserPassword
+           ])
   }
   
-  public static func destroy(role: String) throws {
+  public static func destroy(superuser: String = "postgres",
+                             superuserPassword: String = "",
+                             role: String) throws {
     let destroyUserScript = #"""
-      psql -U postgres \
+      psql -U $SH_LOCAL_POSTGRES_SUPERUSER \
         --command="DROP USER IF EXISTS $SH_LOCAL_POSTGRES_ROLE" \
         --command="\du" \
         postgres
     """#
     try sh(.terminal, destroyUserScript,
-           environment: ["SH_LOCAL_POSTGRES_ROLE": role])
+           environment: [
+            "SH_LOCAL_POSTGRES_ROLE": role,
+            "SH_LOCAL_POSTGRES_SUPERUSER": superuser,
+            "PGPASSWORD": superuserPassword
+           ])
   }
 }
