@@ -3,11 +3,14 @@ import Foundation
 import XCTest
 
 final class ShLocalPostgresTests: XCTestCase {
-
-  let config = LocalPostgres(role: "tomato",
-                             password: "fresh_password",
-                             databaseStem: "supermarket",
-                             databaseTails: ["development", "testing"])
+  
+  let config = LocalPostgres(
+    superuser: "postgres",
+    superuserPassword: "postgres",
+    role: "tomato",
+    password: "fresh_password",
+    databaseStem: "supermarket",
+    databaseTails: ["development", "testing"])
   
   func testCreateAndDestroy() throws {
     
@@ -15,7 +18,7 @@ final class ShLocalPostgresTests: XCTestCase {
     XCTAssertFalse(beforeStatus.contains("tomato"))
     
     try config.createAll()
-        
+    
     let afterCreateStatus = try ShLocalPostgres.currentStatus()
     XCTAssertTrue(afterCreateStatus.contains("tomato"))
     

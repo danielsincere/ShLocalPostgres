@@ -54,9 +54,6 @@ jobs:
             sleep 10
           done
       - run: |
-          psql --command="CREATE USER postgres PASSWORD 'postgres'" --command="\du" postgres
-      - run: |
-          createdb --owner=postgres postgres
           PGPASSWORD=postgres psql --username=postgres --host=localhost --list postgres
 
       - uses: swift-actions/setup-swift@v1
