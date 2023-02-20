@@ -53,8 +53,8 @@ jobs:
             echo "PostgreSQL service not ready, wait 10 more sec, attempts left: $i"
             sleep 10
           done
-      - run: |
-          PGPASSWORD=postgres psql --username=postgres --host=localhost --list postgres
+      - run: psql --command="CREATE USER postgres PASSWORD 'postgres'" --command="\du" postgres
+      - run: PGPASSWORD=postgres psql --username=postgres --host=localhost --list postgres
 
       - uses: swift-actions/setup-swift@v1
         with:
