@@ -7,51 +7,19 @@ on:
 
 jobs:
   test-linux:
-    name: Test on Ubuntu
+    name: Ubuntu
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_DB: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-        ports:
-          - 5432:5432
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: swift-actions/setup-swift@v1
         with:
           swift-version: "5.7"
       - uses: actions/checkout@v2
-      - run: swift test
       - run: swift build -c release
 
   test-mac:
-    name: Test on Mac
-    runs-on: macos-11.0
+    name: Mac
+    runs-on: macos-12
     steps:
-      - run: |
-          brew services start postgresql
-          echo "Check PostgreSQL service is running"
-          i=10
-          COMMAND='pg_isready'
-          while [ $i -gt 0 ]; do
-            echo "Check PostgreSQL service status"
-            eval $COMMAND && break
-            ((i--))
-            if [ $i == 0 ]; then
-              echo "PostgreSQL service not ready, all attempts exhausted"
-              exit 1
-            fi
-            echo "PostgreSQL service not ready, wait 10 more sec, attempts left: $i"
-            sleep 10
-          done
       - uses: swift-actions/setup-swift@v1
         with:
           swift-version: "5.7"

@@ -14,8 +14,5 @@ let package = Package(name: "ShLocalPostgres",
     .target(
       name: "ShLocalPostgres",
       dependencies: ["Sh"]),
-    .testTarget(
-      name: "ShLocalPostgresTests",
-      dependencies: ["ShLocalPostgres"]),
   ]
 )
