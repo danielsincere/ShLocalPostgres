@@ -15,11 +15,11 @@ let config = LocalPostgres(role: "fqauth",
 then
 
 ```swift
-try config.createAll() // Will create "fqauth_development" & "fqauth_testing"                                             
+try config.createAll() // Will create "fqauth_development" & "fqauth_testing" and the role "fqauth"                                           
 ```
 or
 ```swift
-try config.destroyAll() // Will destroy "fqauth_development" & "fqauth_testing"    
+try config.destroyAll() // Will destroy "fqauth_development" & "fqauth_testing" and the role "fqauth"   
 ```
 
 ## Getting started
